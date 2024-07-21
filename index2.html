@@ -1,67 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>D3 Scatter Plot with Tooltips</title>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <style>
+    circle { fill: lightblue; stroke: black; }
+    .tooltip { position: absolute; visibility: hidden; background: #fff; border: 1px solid #ccc; padding: 5px; }
+  </style>
+</head>
+<body onload="init()">
+  <div id="my_dataviz"></div>
+  
+  <script>
+    async function init() {
+      const data = await d3.csv("https://flunky.github.io/cars2017.csv");
+      var margin = { top: 30, right: 30, bottom: 70, left: 60 },
+          width = 460 - margin.left - margin.right,
+          height = 400 - margin.top - margin.bottom;
 
-<html>
-<script src='https://d3js.org/d3.v5.min.js'></script>
-<style> circle {fill: lightblue; stroke: black;} </style>
-<body onload='init()'>
-<div id="my_dataviz"></div>
-<br>
-<br>
-<br>
+      const svg = d3.select("#my_dataviz")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom);
 
-<button onclick="window.location.href='https://nikhita2.github.io/index.html';">Scene 1</button>
-<button onclick="window.location.href='https://nikhita2.github.io/index2.html';">Scene 2</button>
-<button onclick="window.location.href='https://nikhita2.github.io/index3.html';">Scene 3</button>
-<script>
-async function init() {
-    const data = await d3.csv("https://flunky.github.io/cars2017.csv");
-    var margin = {top: 30, right: 30, bottom: 70, left: 60},
-    width = 460 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+      const x = d3.scaleLog().domain([10, 150]).range([0, width]);
+      const y = d3.scaleLog().domain([10, 150]).range([height, 0]);
 
-    const svg = d3.select("#my_dataviz")
-  .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom);
+      const xaxis = d3.axisBottom(x).tickValues([10, 20, 50, 100]).tickFormat(d3.format("~s"));
+      const yaxis = d3.axisLeft(y).tickValues([10, 20, 50, 100]).tickFormat(d3.format("~s"));
 
+      var colorScale = d3.scaleOrdinal()
+        .domain(data.map(d => d.category))
+        .range(d3.schemeCategory10);
 
-    const x = d3.scaleLog().domain([10,150]).range([0, width]);
-    const y = d3.scaleLog().domain([10,150]).range([height, 0]);
+      svg.append("g")
+        .attr("transform", "translate(50,50)")
+        .selectAll("circle")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("cx", d => x(+d.AverageCityMPG))
+        .attr("cy", d => y(+d.AverageHighwayMPG))
+        .attr("r", d => 2 + +d.EngineCylinders) // Convert to number
+        .attr("opacity", 0.7)
+        .style("fill", d => colorScale(+d.EngineCylinders))
+        .on("mouseover", function(d) {
+          tooltip.style("visibility", "visible")
+                 .html(`<strong>Make:</strong> ${d.Make}<br><strong>Fuel:</strong> ${d.Fuel}<br><strong>City MPG:</strong> ${+d.AverageCityMPG}<br><strong>Highway MPG:</strong> ${+d.AverageHighwayMPG}`);
+        })
+        .on("mousemove", function(event) {
+          tooltip.style("top", (event.pageY - 10) + "px")
+                 .style("left", (event.pageX + 10) + "px");
+        })
+        .on("mouseout", function() {
+          tooltip.style("visibility", "hidden");
+        });
 
-    const xaxis = d3.axisBottom(x).tickValues([10,20,50,100]).tickFormat(d3.format("~s"));
-    const yaxis = d3.axisLeft(y).tickValues([10,20,50,100]).tickFormat(d3.format("~s"));
+      svg.append("g").attr("transform", "translate(50,50)").call(yaxis);
 
-    var colorScale = d3.scaleOrdinal()
-    .domain(data.map(d => d.category))
-    .range(d3.schemeCategory10);
+      svg.append("text")
+        .attr("transform", "translate(0,50)")
+        .attr("transform", "translate(0,150), rotate(-90)")
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("Average City MPG");
 
-    svg.append("g")
-    .attr("transform","translate(50,50)")
-    .selectAll("circle")
-    .data(data)
-    .enter()
-    .append("circle")
-    .attr("cx", d => x(d["AverageCityMPG"]))
-    .attr("cy", d => y(d["AverageHighwayMPG"]))
-    .attr("r", d => 2 + +d["EngineCylinders"]) //engcyl is string
-    .style("fill", function(d) { return colorScale(+ +d["EngineCylinders"]); });
+      svg.append("g").attr("transform", "translate(50,350)").call(xaxis);
 
-    svg.append("g").attr("transform", "translate(50,50)").call(yaxis);
+      svg.append("text")
+        .attr("transform", "translate(200,370)")
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("Average Highway MPG");
 
-   svg.append("text")
-  .attr("transform","translate(0,50)")
-  .attr("transform", "translate(0,150), rotate(-90)")
-  .attr("dy", "1em")
-  .style("text-anchor", "middle")
-  .text("Average City MPG");
+      svg.append("text")
+        .attr("transform", "translate(340,170)")
+        .attr("dy", "0em")
+        .style("text-anchor", "middle")
+        .text("As the number of cylinder decreases");
 
-    svg.append("g").attr("transform", "translate(50,350)").call(xaxis);
+      svg.append("text")
+        .attr("transform", "translate(370,160)")
+        .attr("dy", "2em")
+        .style("text-anchor", "middle")
+        .text("the fuel efficiency increases.");
 
-svg.append("text")
-  .attr("transform","translate(200,370)")
-  .attr("dy", "1em")
-  .style("text-anchor", "middle")
-  .text("Average Highway MPG");
-}
-</script>
+      var keys = [0, 4, 6, 8, 10, 12];
+
+      svg.selectAll("mydots")
+        .data(keys)
+        .enter()
+        .append("circle")
+        .attr("transform", "translate(300,110)")
+        .attr("cx", 100)
+        .attr("cy", (d, i) => 100 + i * 25)
+        .attr("r", 7)
+        .style("fill", d => colorScale(d));
+
+      svg.selectAll("mylabels")
+        .data(keys)
+        .enter()
+        .append("text")
+        .attr("transform", "translate(300,110)")
+        .attr("x", 120)
+        .attr("y", (d, i) => 100 + i * 25)
+        .style("fill", 'black')
+        .text(d => d)
+        .attr("text-anchor", "left")
+        .style("alignment-baseline", "middle");
+
+      var tooltip = d3.select("body")
+        .append("div")
+        .attr("class", "tooltip")
+        .style("position", "absolute")
+        .style("visibility", "hidden");
+
+    }
+  </script>
 </body>
 </html>
