@@ -45,7 +45,11 @@ async function init() {
     .attr("cx", d => x(d["AverageCityMPG"]))
     .attr("cy", d => y(d["AverageHighwayMPG"]))
     .attr("r", d => 2 + +d["EngineCylinders"]) //engcyl is string
-    .style("fill", function(d) { return colorScale(+ +d["EngineCylinders"]); });
+    .style("fill", function(d) { return colorScale(+ +d["EngineCylinders"]); })
+    .on("mouseover", function(d) {
+        d3.selectAll('circle')
+        .filter((circle) => circle.EngineCylinders != d.EngineCylinders).transition().style("opacity", 0.02) 
+    })
 
     svg.append("g").attr("transform", "translate(50,50)").call(yaxis);
 

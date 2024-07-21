@@ -31,7 +31,7 @@
       const yaxis = d3.axisLeft(y).tickValues([10, 20, 50, 100]).tickFormat(d3.format("~s"));
 
       var colorScale = d3.scaleOrdinal()
-        .domain(data.map(d => d.category))
+        .domain(data.map(d => d.Fuel))
         .range(d3.schemeCategory10);
 
       svg.append("g")
@@ -43,19 +43,15 @@
         .attr("cx", d => x(+d.AverageCityMPG))
         .attr("cy", d => y(+d.AverageHighwayMPG))
         .attr("r", d => 2 + +d.EngineCylinders) // Convert to number
-        .attr("opacity", 0.7)
-        .style("fill", d => colorScale(+d.EngineCylinders))
+        .attr("opacity", 1)
+        .style("fill", d => colorScale(d.Fuel))
         .on("mouseover", function(d) {
-          tooltip.style("visibility", "visible")
-                 .html(`<strong>Make:</strong> ${d.Make}<br><strong>Fuel:</strong> ${d.Fuel}<br><strong>City MPG:</strong> ${+d.AverageCityMPG}<br><strong>Highway MPG:</strong> ${+d.AverageHighwayMPG}`);
-        })
-        .on("mousemove", function(event) {
-          tooltip.style("top", (event.pageY - 10) + "px")
-                 .style("left", (event.pageX + 10) + "px");
-        })
-        .on("mouseout", function() {
-          tooltip.style("visibility", "hidden");
-        });
+        d3.selectAll('circle')
+        .filter((circle) => circle.Fuel != d.Fuel).transition().style("opacity", 0.02) 
+    }).on("mouseout", function(d) {
+        d3.selectAll('circle')
+        .filter((circle) => circle.Fuel != d.Fuel).transition().style("opacity", 1) 
+    })
 
       svg.append("g").attr("transform", "translate(50,50)").call(yaxis);
 
@@ -74,25 +70,54 @@
         .style("text-anchor", "middle")
         .text("Average Highway MPG");
 
+     svg.append("text")
+        .attr("transform", "translate(340,150)")
+        .attr("dy", "0em")
+        .style("text-anchor", "middle")
+        .text("Within each of the fuel types,");
       svg.append("text")
         .attr("transform", "translate(340,170)")
         .attr("dy", "0em")
         .style("text-anchor", "middle")
-        .text("As the number of cylinder decreases");
+        .text("as the number of cylinder decreases");
 
       svg.append("text")
         .attr("transform", "translate(370,160)")
         .attr("dy", "2em")
         .style("text-anchor", "middle")
-        .text("the fuel efficiency increases.");
+        .text("the fuel efficiency increases");
+      
+      svg.append("text")
+        .attr("transform", "translate(350,180)")
+        .attr("dy", "2em")
+        .style("text-anchor", "middle")
+        .text("for cars with gasoline fuel type,");
+      
+       svg.append("text")
+        .attr("transform", "translate(340,180)")
+        .attr("dy", "3em")
+        .style("text-anchor", "middle")
+        .text("but stays the same");
 
-      var keys = [0, 4, 6, 8, 10, 12];
+       svg.append("text")
+        .attr("transform", "translate(340,180)")
+        .attr("dy", "4em")
+        .style("text-anchor", "middle")
+        .text("for cars with diesel fuel type");
+       
+      svg.append("text")
+        .attr("transform", "translate(340,180)")
+        .attr("dy", "5em")
+        .style("text-anchor", "middle")
+        .text("and for cars with electricity fuel type");
+
+      var keys = ["Gasoline", "Diesel", "Electricity"];
 
       svg.selectAll("mydots")
         .data(keys)
         .enter()
         .append("circle")
-        .attr("transform", "translate(300,110)")
+        .attr("transform", "translate(200,180)")
         .attr("cx", 100)
         .attr("cy", (d, i) => 100 + i * 25)
         .attr("r", 7)
@@ -102,7 +127,7 @@
         .data(keys)
         .enter()
         .append("text")
-        .attr("transform", "translate(300,110)")
+        .attr("transform", "translate(200,180)")
         .attr("x", 120)
         .attr("y", (d, i) => 100 + i * 25)
         .style("fill", 'black')
