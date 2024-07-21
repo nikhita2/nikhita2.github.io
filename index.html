@@ -34,6 +34,8 @@ async function init() {
     .domain(data.map(d => d.category))
     .range(d3.schemeCategory10);
 
+    
+
     svg.append("g")
     .attr("transform","translate(50,50)")
     .selectAll("circle")
@@ -74,9 +76,31 @@ svg
   .attr("dy", "2em")
   .style("text-anchor", "middle")
   .text("the fuel efficiency increases.")
+
+var keys = [0, 4, 6, 8, 10, 12]
+
+svg.selectAll("mydots")
+  .data(keys)
+  .enter()
+  .append("circle")
+.attr("transform","translate(300,110)")
+    .attr("cx", 100)
+    .attr("cy", function(d,i){ return 100 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr("r", 7)
+    .style("fill", function(d){ return colorScale(d)})
+
+svg.selectAll("mylabels")
+  .data(keys)
+  .enter()
+  .append("text")
+.attr("transform","translate(300,110)")
+    .attr("x", 120)
+    .attr("y", function(d,i){ return 100 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
+    .style("fill", function(d){ return 'black'})
+    .text(function(d){ return d})
+    .attr("text-anchor", "left")
+    .style("alignment-baseline", "middle")
 }
-
-
 </script>
 </body>
 </html>
