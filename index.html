@@ -14,9 +14,9 @@
 <script>
 async function init() {
     const data = await d3.csv("https://flunky.github.io/cars2017.csv");
-    var margin = {top: 30, right: 30, bottom: 70, left: 60},
-    width = 460 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+    var margin = { top: 30, right: 430, bottom: 70, left: 60 },
+          width = 860 - margin.left - margin.right,
+          height = 400 - margin.top - margin.bottom;
 
     const svg = d3.select("#my_dataviz")
   .append("svg")
@@ -65,25 +65,25 @@ svg.append("text")
   .text("Average Highway MPG");
 
 svg.append("text")
-  .attr("transform","translate(340,170)")
+  .attr("transform","translate(540,100)")
   .attr("dy", "0em")
   .style("text-anchor", "middle")
   .text("As the number of cylinder decreases")
 
 svg
   .append("text")
-  .attr("transform","translate(370,160)")
-  .attr("dy", "2em")
+  .attr("transform","translate(540,100)")
+  .attr("dy", "1em")
   .style("text-anchor", "middle")
   .text("the fuel efficiency increases.")
 
-var keys = [0, 4, 6, 8, 10, 12]
+var keys = [0, 2, 3, 4, 6, 8, 10, 12]
 
 svg.selectAll("mydots")
   .data(keys)
   .enter()
   .append("circle")
-.attr("transform","translate(300,110)")
+.attr("transform","translate(400,50)")
     .attr("cx", 100)
     .attr("cy", function(d,i){ return 100 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
     .attr("r", 7)
@@ -93,7 +93,7 @@ svg.selectAll("mylabels")
   .data(keys)
   .enter()
   .append("text")
-.attr("transform","translate(300,110)")
+.attr("transform","translate(400,50)")
     .attr("x", 120)
     .attr("y", function(d,i){ return 100 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
     .style("fill", function(d){ return 'black'})
