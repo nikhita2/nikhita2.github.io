@@ -66,17 +66,31 @@ svg.append("text")
   .text("Average Highway MPG");
 
 svg.append("text")
-  .attr("transform","translate(540,100)")
+  .attr("transform","translate(540,90)")
   .attr("dy", "0em")
   .style("text-anchor", "middle")
   .text("As the number of cylinder decreases")
 
 svg
   .append("text")
-  .attr("transform","translate(540,100)")
+  .attr("transform","translate(540,90)")
   .attr("dy", "1em")
   .style("text-anchor", "middle")
   .text("the fuel efficiency increases.")
+
+svg
+  .append("text")
+  .attr("transform","translate(540,90)")
+  .attr("dy", "2em")
+  .style("text-anchor", "middle")
+  .text("The radius of each of the points is proportional")
+
+svg
+  .append("text")
+  .attr("transform","translate(540,90)")
+  .attr("dy", "3em")
+  .style("text-anchor", "middle")
+  .text("to its number of cylinders.")
 
 var keys = [0, 2, 3, 4, 6, 8, 10, 12]
 
