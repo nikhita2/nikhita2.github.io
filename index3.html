@@ -82,30 +82,25 @@ const makeAnnotations = d3.annotation()
         .domain(data.map(d => d.Fuel))
         .range(d3.schemeCategory10);
 
-      svg.append("g")
+        svg.append("g")
         .attr("transform", "translate(50,50)")
         .selectAll("circle")
         .data(data)
         .enter()
         .append("circle")
+        .attr("class", "data-circle")
         .attr("cx", d => x(+d.AverageCityMPG))
         .attr("cy", d => y(+d.AverageHighwayMPG))
         .attr("r", d => 2 + +d.EngineCylinders) // Convert to number
         .attr("opacity", 1)
         .style("fill", d => colorScale(d.Fuel))
         .on("mouseover", function(d) {
-        d3.selectAll('circle')
-        .filter((circle) => circle.Fuel != d.Fuel).transition().style("opacity", 0.02)
-        tooltip.style("visibility", "visible")
-                 .html(`<strong>Make:</strong> ${d.Make}<br><strong>Fuel:</strong> ${d.Fuel}<br><strong>City MPG:</strong> ${+d.AverageCityMPG}<br><strong>Highway MPG:</strong> ${+d.AverageHighwayMPG}`); 
-        }).on("mouseout", function(d) {
-        d3.selectAll('circle')
+        d3.selectAll('.data-circle')
+        .filter((circle) => circle.Fuel != d.Fuel).transition().style("opacity", 0.02) 
+    }).on("mouseout", function(d) {
+        d3.selectAll('.data-circle')
         .filter((circle) => circle.Fuel != d.Fuel).transition().style("opacity", 1) 
-        tooltip.style("visibility", "hidden");
-        }).on("mousemove", function(event) {
-          tooltip.style("top", (event.pageY - 10) + "px")
-                 .style("left", (event.pageX + 10) + "px");
-        })
+    })
 
       svg.append("g").attr("transform", "translate(50,50)").call(yaxis);
 
