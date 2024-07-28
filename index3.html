@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>D3 Scatter Plot with Tooltips</title>
   <script src="https://d3js.org/d3.v5.min.js"></script>
+  <!-- Load d3-annotation -->
+  <script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
   <style>
     circle { fill: lightblue; stroke: black; }
     .tooltip { position: absolute; visibility: hidden; background: #fff; border: 1px solid #ccc; padding: 5px; }
@@ -17,12 +19,15 @@
 
   <button onclick="window.location.href='https://nikhita2.github.io/index.html';">Scene 1</button>
   <button onclick="window.location.href='https://nikhita2.github.io/index2.html';">Scene 2</button>
-  <button onclick="window.location.href='https://nikhita2.github.io/index3.html';">Scene 3</button>  
+  <button onclick="window.location.href='https://nikhita2.github.io/index3.html';">Scene 3</button>
   <script>
     async function init() {
+      // Features of the annotation
+
+
       const data = await d3.csv("https://flunky.github.io/cars2017.csv");
-      var margin = { top: 30, right: 30, bottom: 70, left: 60 },
-          width = 460 - margin.left - margin.right,
+      var margin = { top: 30, right: 430, bottom: 70, left: 60 },
+          width = 860 - margin.left - margin.right,
           height = 400 - margin.top - margin.bottom;
 
       const svg = d3.select("#my_dataviz")
@@ -36,8 +41,45 @@
       const xaxis = d3.axisBottom(x).tickValues([10, 20, 50, 100]).tickFormat(d3.format("~s"));
       const yaxis = d3.axisLeft(y).tickValues([10, 20, 50, 100]).tickFormat(d3.format("~s"));
 
+const annotations = [
+  {
+    note: {
+      label: "Gasoline fuel-type car with highest Average City MPG",
+      title: "Mitsubishi"
+    },
+    x: x(35) + 50,
+    y: y(42) + 50,
+    dy: 50,
+    dx: 50
+  },
+  {
+    note: {
+      label: "Diesel fuel-type car with highest Average City MPG",
+      title: "BMW"
+    },
+    x: x(30) + 50,
+    y: y(41) + 50,
+    dy: -40,
+    dx: -30
+  },
+  {
+    note: {
+      label: "Electricity fuel-type car with highest Average City MPG",
+      title: "Hyundai"
+    },
+    x: x(150) + 50,
+    y: y(122) + 50,
+    dy: 0,
+    dx: -100
+  }
+]
+
+// Add annotation to the chart
+const makeAnnotations = d3.annotation()
+  .annotations(annotations)
+
       var colorScale = d3.scaleOrdinal()
-        .domain(data.map(d => d.category))
+        .domain(data.map(d => d.Fuel))
         .range(d3.schemeCategory10);
 
       svg.append("g")
@@ -49,19 +91,21 @@
         .attr("cx", d => x(+d.AverageCityMPG))
         .attr("cy", d => y(+d.AverageHighwayMPG))
         .attr("r", d => 2 + +d.EngineCylinders) // Convert to number
-        .attr("opacity", 0.7)
-        .style("fill", d => colorScale(+d.EngineCylinders))
+        .attr("opacity", 1)
+        .style("fill", d => colorScale(d.Fuel))
         .on("mouseover", function(d) {
-          tooltip.style("visibility", "visible")
-                 .html(`<strong>Make:</strong> ${d.Make}<br><strong>Fuel:</strong> ${d.Fuel}<br><strong>City MPG:</strong> ${+d.AverageCityMPG}<br><strong>Highway MPG:</strong> ${+d.AverageHighwayMPG}`);
-        })
-        .on("mousemove", function(event) {
+        d3.selectAll('circle')
+        .filter((circle) => circle.Fuel != d.Fuel).transition().style("opacity", 0.02)
+        tooltip.style("visibility", "visible")
+                 .html(`<strong>Make:</strong> ${d.Make}<br><strong>Fuel:</strong> ${d.Fuel}<br><strong>City MPG:</strong> ${+d.AverageCityMPG}<br><strong>Highway MPG:</strong> ${+d.AverageHighwayMPG}`); 
+        }).on("mouseout", function(d) {
+        d3.selectAll('circle')
+        .filter((circle) => circle.Fuel != d.Fuel).transition().style("opacity", 1) 
+        tooltip.style("visibility", "hidden");
+        }).on("mousemove", function(event) {
           tooltip.style("top", (event.pageY - 10) + "px")
                  .style("left", (event.pageX + 10) + "px");
         })
-        .on("mouseout", function() {
-          tooltip.style("visibility", "hidden");
-        });
 
       svg.append("g").attr("transform", "translate(50,50)").call(yaxis);
 
@@ -80,25 +124,56 @@
         .style("text-anchor", "middle")
         .text("Average Highway MPG");
 
-      svg.append("text")
-        .attr("transform", "translate(340,170)")
+     // text
+
+     svg.append("text")
+        .attr("transform", "translate(540,120)")
         .attr("dy", "0em")
         .style("text-anchor", "middle")
-        .text("As the number of cylinder decreases");
+        .text("Within each of the fuel types,");
+      svg.append("text")
+        .attr("transform", "translate(540,120)")
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("as the number of cylinder decreases");
 
       svg.append("text")
-        .attr("transform", "translate(370,160)")
+        .attr("transform", "translate(540,120)")
         .attr("dy", "2em")
         .style("text-anchor", "middle")
-        .text("the fuel efficiency increases.");
+        .text("the fuel efficiency increases");
+      
+      svg.append("text")
+        .attr("transform", "translate(540,120)")
+        .attr("dy", "3em")
+        .style("text-anchor", "middle")
+        .text("for cars with gasoline fuel type,");
+      
+       svg.append("text")
+        .attr("transform", "translate(540,120)")
+        .attr("dy", "4em")
+        .style("text-anchor", "middle")
+        .text("but stays the same");
 
-      var keys = [0, 4, 6, 8, 10, 12];
+       svg.append("text")
+        .attr("transform", "translate(540,120)")
+        .attr("dy", "5em")
+        .style("text-anchor", "middle")
+        .text("for cars with diesel fuel type");
+       
+      svg.append("text")
+        .attr("transform", "translate(540,120)")
+        .attr("dy", "6em")
+        .style("text-anchor", "middle")
+        .text("and for cars with electricity fuel type");
+
+      var keys = ["Gasoline", "Diesel", "Electricity"];
 
       svg.selectAll("mydots")
         .data(keys)
         .enter()
         .append("circle")
-        .attr("transform", "translate(300,110)")
+        .attr("transform", "translate(400,180)")
         .attr("cx", 100)
         .attr("cy", (d, i) => 100 + i * 25)
         .attr("r", 7)
@@ -108,7 +183,7 @@
         .data(keys)
         .enter()
         .append("text")
-        .attr("transform", "translate(300,110)")
+        .attr("transform", "translate(400,180)")
         .attr("x", 120)
         .attr("y", (d, i) => 100 + i * 25)
         .style("fill", 'black')
@@ -121,8 +196,13 @@
         .attr("class", "tooltip")
         .style("position", "absolute")
         .style("visibility", "hidden");
+      
+      svg
+  .append("g")
+  .call(makeAnnotations)
 
     }
   </script>
 </body>
 </html>
+
