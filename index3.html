@@ -132,45 +132,63 @@ const makeAnnotations = d3.annotation()
      // text
 
      svg.append("text")
-        .attr("transform", "translate(540,120)")
+        .attr("transform", "translate(540,80)")
         .attr("dy", "0em")
         .style("text-anchor", "middle")
-        .text("Within each of the fuel types,");
+        .text("Within the diesel fuel type,");
       svg.append("text")
-        .attr("transform", "translate(540,120)")
+        .attr("transform", "translate(540,80)")
         .attr("dy", "1em")
         .style("text-anchor", "middle")
-        .text("as the number of cylinder decreases");
+        .text("the BMW has the best fuel efficiency.");
 
       svg.append("text")
-        .attr("transform", "translate(540,120)")
+        .attr("transform", "translate(540,80)")
         .attr("dy", "2em")
         .style("text-anchor", "middle")
-        .text("the fuel efficiency increases");
+        .text("Within the electricity fuel type,");
       
       svg.append("text")
-        .attr("transform", "translate(540,120)")
+        .attr("transform", "translate(540,80)")
         .attr("dy", "3em")
         .style("text-anchor", "middle")
-        .text("for cars with gasoline fuel type,");
+        .text("the Hyundai has the best fuel efficiency.");
       
        svg.append("text")
-        .attr("transform", "translate(540,120)")
+        .attr("transform", "translate(540,80)")
         .attr("dy", "4em")
         .style("text-anchor", "middle")
-        .text("but stays the same");
+        .text("Within the gasoline fuel type,");
 
        svg.append("text")
-        .attr("transform", "translate(540,120)")
+        .attr("transform", "translate(540,80)")
         .attr("dy", "5em")
         .style("text-anchor", "middle")
-        .text("for cars with diesel fuel type");
+        .text("the Mitsubushi has the best fuel efficiency.");
        
       svg.append("text")
-        .attr("transform", "translate(540,120)")
+        .attr("transform", "translate(540,80)")
         .attr("dy", "6em")
         .style("text-anchor", "middle")
-        .text("and for cars with electricity fuel type");
+        .text("Additionally, gasoline cars with lower number of cylinders");
+     
+      svg.append("text")
+        .attr("transform", "translate(540,80)")
+        .attr("dy", "7em")
+        .style("text-anchor", "middle")
+        .text("have a higher fuel efficiency.");
+     
+     svg.append("text")
+        .attr("transform", "translate(540,80)")
+        .attr("dy", "8em")
+        .style("text-anchor", "middle")
+        .text("Consider this when choosing your new car. Hover over the circles to see");
+
+    svg.append("text")
+        .attr("transform", "translate(540,80)")
+        .attr("dy", "9em")
+        .style("text-anchor", "middle")
+        .text("fuel efficiency, fuel type, and number of cylinders for all options.");
 
       var keys = ["Gasoline", "Diesel", "Electricity"];
 
