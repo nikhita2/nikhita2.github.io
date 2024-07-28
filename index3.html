@@ -16,7 +16,7 @@
   <br>
   <br>
   <br>
-
+  <div id="tooltips"></div>
   <button onclick="window.location.href='https://nikhita2.github.io/index.html';">Scene 1</button>
   <button onclick="window.location.href='https://nikhita2.github.io/index2.html';">Scene 2</button>
   <button onclick="window.location.href='https://nikhita2.github.io/index3.html';">Scene 3</button>
@@ -95,14 +95,22 @@ const makeAnnotations = d3.annotation()
         .attr("opacity", 1)
         .style("fill", d => colorScale(d.Fuel))
         .on("mouseover", function(d) {
-        
+        d3.selectAll('data-circle')
+        .filter((circle) => circle.Fuel != d.Fuel).transition().style("opacity", 0.02)
+        tooltip.style("visibility", "visible")
+                 .html(`<strong>Make:</strong> ${d.Make}<br><strong>Fuel:</strong> ${d.Fuel}<br><strong>City MPG:</strong> ${+d.AverageCityMPG}<br><strong>Highway MPG:</strong> ${+d.AverageHighwayMPG}`); 
+
         d3.selectAll('.data-circle')
         .transition().duration(200).style("opacity", 0.02)
         d3.select(this).transition().duration(200).style("opacity", 1) 
     }).on("mouseout", function(d) {
         d3.selectAll('.data-circle')
         .transition().duration(200).style("opacity", 1) 
-    })
+         tooltip.style("visibility", "hidden");
+    }).on("mousemove", function(event) {
+          tooltip.style("top", "450px")
+                 .style("left", "300px");
+        })
 
       svg.append("g").attr("transform", "translate(50,50)").call(yaxis);
 
