@@ -94,23 +94,24 @@ const makeAnnotations = d3.annotation()
         .attr("r", d => 2 + +d.EngineCylinders) // Convert to number
         .attr("opacity", 1)
         .style("fill", d => colorScale(d.Fuel))
-        .on("mouseover", function(d) {
+        .on("mouseover", function(event, d) {
         d3.selectAll('data-circle')
         .filter((circle) => circle.Fuel != d.Fuel).transition().style("opacity", 0.02)
-        tooltip.style("visibility", "visible")
-                 .html(`<strong>Make:</strong> ${d.Make}<br><strong>Fuel:</strong> ${d.Fuel}<br><strong>City MPG:</strong> ${+d.AverageCityMPG}<br><strong>Highway MPG:</strong> ${+d.AverageHighwayMPG}`); 
 
         d3.selectAll('.data-circle')
         .transition().duration(200).style("opacity", 0.02)
         d3.select(this).transition().duration(200).style("opacity", 1) 
+        tooltip.style("visibility", "visible")
     }).on("mouseout", function(d) {
         d3.selectAll('.data-circle')
         .transition().duration(200).style("opacity", 1) 
          tooltip.style("visibility", "hidden");
-    }).on("mousemove", function(event) {
-          tooltip.style("top", "450px")
-                 .style("left", "300px");
-        })
+    }).on("mousemove", function(d) {
+      tooltip.style("visibility", "visible")
+                 .style("left", (d3.select(this).attr("cx") - 50) + "px")
+        .style("top", (d3.select(this).attr("cy") - 50) + "px")
+                 .html(`<strong>Make:</strong> ${d.Make}<br><strong>Fuel:</strong> ${d.Fuel}<br><strong>City MPG:</strong> ${+d.AverageCityMPG}<br><strong>Highway MPG:</strong> ${+d.AverageHighwayMPG}<br><strong>Engine cylinders: </strong>${+d.EngineCylinders}`); 
+    });
 
       svg.append("g").attr("transform", "translate(50,50)").call(yaxis);
 
@@ -236,4 +237,5 @@ const makeAnnotations = d3.annotation()
   </script>
 </body>
 </html>
+
 
