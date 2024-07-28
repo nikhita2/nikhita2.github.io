@@ -21,8 +21,8 @@
   <script>
     async function init() {
       const data = await d3.csv("https://flunky.github.io/cars2017.csv");
-      var margin = { top: 30, right: 30, bottom: 70, left: 60 },
-          width = 460 - margin.left - margin.right,
+      var margin = { top: 30, right: 430, bottom: 70, left: 60 },
+          width = 860 - margin.left - margin.right,
           height = 400 - margin.top - margin.bottom;
 
       const svg = d3.select("#my_dataviz")
@@ -77,43 +77,43 @@
         .text("Average Highway MPG");
 
      svg.append("text")
-        .attr("transform", "translate(340,150)")
+        .attr("transform","translate(540,100)")
         .attr("dy", "0em")
         .style("text-anchor", "middle")
         .text("Within each of the fuel types,");
       svg.append("text")
-        .attr("transform", "translate(340,170)")
-        .attr("dy", "0em")
+        .attr("transform","translate(540,100)")
+        .attr("dy", "1em")
         .style("text-anchor", "middle")
         .text("as the number of cylinder decreases");
 
       svg.append("text")
-        .attr("transform", "translate(370,160)")
+        .attr("transform","translate(540,100)")
         .attr("dy", "2em")
         .style("text-anchor", "middle")
         .text("the fuel efficiency increases");
       
       svg.append("text")
-        .attr("transform", "translate(350,180)")
-        .attr("dy", "2em")
+        .attr("transform","translate(540,100)")
+        .attr("dy", "3em")
         .style("text-anchor", "middle")
         .text("for cars with gasoline fuel type,");
       
        svg.append("text")
-        .attr("transform", "translate(340,180)")
-        .attr("dy", "3em")
+        .attr("transform","translate(540,100)")
+        .attr("dy", "4em")
         .style("text-anchor", "middle")
         .text("but stays the same");
 
        svg.append("text")
-        .attr("transform", "translate(340,180)")
-        .attr("dy", "4em")
+        .attr("transform","translate(540,100)")
+        .attr("dy", "5em")
         .style("text-anchor", "middle")
         .text("for cars with diesel fuel type");
        
       svg.append("text")
-        .attr("transform", "translate(340,180)")
-        .attr("dy", "5em")
+        .attr("transform","translate(540,100)")
+        .attr("dy", "6em")
         .style("text-anchor", "middle")
         .text("and for cars with electricity fuel type");
 
@@ -123,7 +123,7 @@
         .data(keys)
         .enter()
         .append("circle")
-        .attr("transform", "translate(200,180)")
+        .attr("transform", "translate(400,150)")
         .attr("cx", 100)
         .attr("cy", (d, i) => 100 + i * 25)
         .attr("r", 7)
@@ -133,7 +133,7 @@
         .data(keys)
         .enter()
         .append("text")
-        .attr("transform", "translate(200,180)")
+        .attr("transform", "translate(400,150)")
         .attr("x", 120)
         .attr("y", (d, i) => 100 + i * 25)
         .style("fill", 'black')
