@@ -79,11 +79,19 @@ svg
 
 var keys = [0, 2, 3, 4, 6, 8, 10, 12]
 
+svg
+  .append("text")
+  .attr("transform","translate(560,140)")
+  .attr("dy", "1em")
+  .style("text-anchor", "middle")
+  .attr("font-weight", 700)
+  .text("Number of cylinders")
+
 svg.selectAll("mydots")
   .data(keys)
   .enter()
   .append("circle")
-.attr("transform","translate(400,50)")
+.attr("transform","translate(400,75)")
     .attr("cx", 100)
     .attr("cy", function(d,i){ return 100 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
     .attr("r", 7)
@@ -93,7 +101,7 @@ svg.selectAll("mylabels")
   .data(keys)
   .enter()
   .append("text")
-.attr("transform","translate(400,50)")
+.attr("transform","translate(400,75)")
     .attr("x", 120)
     .attr("y", function(d,i){ return 100 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
     .style("fill", function(d){ return 'black'})

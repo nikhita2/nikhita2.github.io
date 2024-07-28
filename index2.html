@@ -122,6 +122,14 @@
 
       var keys = ["Gasoline", "Diesel", "Electricity"];
 
+     svg
+  .append("text")
+  .attr("transform","translate(525,210)")
+  .attr("dy", "1em")
+  .style("text-anchor", "middle")
+  .attr("font-weight", 700)
+  .text("Fuel type")
+
       svg.selectAll("mydots")
         .data(keys)
         .enter()
