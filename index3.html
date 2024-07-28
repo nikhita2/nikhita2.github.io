@@ -97,11 +97,11 @@ const makeAnnotations = d3.annotation()
         .on("mouseover", function(d) {
         
         d3.selectAll('.data-circle')
-        .transition().style("opacity", 0.02)
-        d3.select(this).transition().style("opacity", 1) 
+        .transition().duration(200).style("opacity", 0.02)
+        d3.select(this).transition().duration(200).style("opacity", 1) 
     }).on("mouseout", function(d) {
         d3.selectAll('.data-circle')
-        .transition().style("opacity", 1) 
+        .transition().duration(200).style("opacity", 1) 
     })
 
       svg.append("g").attr("transform", "translate(50,50)").call(yaxis);
