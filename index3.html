@@ -12,6 +12,7 @@
   </style>
 </head>
 <body onload="init()">
+<center>
   <div id="my_dataviz"></div>
   <br>
   <br>
@@ -109,7 +110,7 @@ const makeAnnotations = d3.annotation()
     }).on("mousemove", function(d) {
       tooltip.style("visibility", "visible")
                  .style("left", (d3.select(this).attr("cx") - 50) + "px")
-        .style("top", (d3.select(this).attr("cy") - 50) + "px")
+        .style("top", (d3.select(this).attr("cy") + 50) + "px")
                  .html(`<strong>Make:</strong> ${d.Make}<br><strong>Fuel:</strong> ${d.Fuel}<br><strong>City MPG:</strong> ${+d.AverageCityMPG}<br><strong>Highway MPG:</strong> ${+d.AverageHighwayMPG}<br><strong>Engine cylinders: </strong>${+d.EngineCylinders}`); 
     });
 
@@ -235,7 +236,6 @@ const makeAnnotations = d3.annotation()
 
     }
   </script>
+</center>
 </body>
 </html>
-
-
