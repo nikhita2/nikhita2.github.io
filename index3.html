@@ -107,7 +107,7 @@ const makeAnnotations = d3.annotation()
       tooltip.style("visibility", "visible")
         .style("left", (d3.select(this).attr("cx")) + "px")
         .style("top", `${d3.select(this).attr("cy")}px`)
-        .html(`<span><p><b>Make:</b> ${d.Make}<br><b>Fuel:</b> ${d.Fuel}<br><b>City MPG:</b> ${+d.AverageCityMPG}<br><b>Highway MPG:</b> ${+d.AverageHighwayMPG}<br><b>Engine cylinders: </b>${+d.EngineCylinders}</span>`);
+        .html(`<span><b>Make:</b> ${d.Make}<br><b>Fuel:</b> ${d.Fuel}<br><b>City MPG:</b> ${+d.AverageCityMPG}<br><b>Highway MPG:</b> ${+d.AverageHighwayMPG}<br><b>Engine cylinders: </b>${+d.EngineCylinders}</span>`);
     });
 
       svg.append("g").attr("transform", "translate(50,50)").call(yaxis);
