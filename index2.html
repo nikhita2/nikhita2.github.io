@@ -8,7 +8,6 @@
 </script>  
 <style>
     circle { fill: lightblue; stroke: black; }
-    .tooltip { position: absolute; visibility: hidden; background: #fff; border: 1px solid #ccc; padding: 5px; }
   </style>
 </head>
 <body onload="init()">
@@ -205,12 +204,6 @@ const makeAnnotations = d3.annotation()
         .text(d => d)
         .attr("text-anchor", "left")
         .style("alignment-baseline", "middle");
-
-      var tooltip = d3.select("body")
-        .append("div")
-        .attr("class", "tooltip")
-        .style("position", "absolute")
-        .style("visibility", "hidden");
        
       svg
   .append("g")

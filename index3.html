@@ -7,7 +7,7 @@
   <script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
   <style>
     circle { fill: lightblue; stroke: black; }
-    .tooltip { position: absolute; visibility: hidden; background: #fff; border: 1px solid #ccc; padding: 5px; }
+    .tooltip { position: absolute; visibility: hidden; border: 2px solid; padding: 6px; background: white}
   </style>
 </head>
 <body onload="init()">
@@ -108,9 +108,9 @@ const makeAnnotations = d3.annotation()
          tooltip.style("visibility", "hidden");
     }).on("mousemove", function(d) {
       tooltip.style("visibility", "visible")
-                 .style("left", (d3.select(this).attr("cx")) + "px")
+        .style("left", (d3.select(this).attr("cx")) + "px")
         .style("top", `${d3.select(this).attr("cy")}px`)
-                 .html(`<strong>Make:</strong> ${d.Make}<br><strong>Fuel:</strong> ${d.Fuel}<br><strong>City MPG:</strong> ${+d.AverageCityMPG}<br><strong>Highway MPG:</strong> ${+d.AverageHighwayMPG}<br><strong>Engine cylinders: </strong>${+d.EngineCylinders}`); 
+        .html(`<span><p><b>Make:</b> ${d.Make}<br><b>Fuel:</b> ${d.Fuel}<br><b>City MPG:</b> ${+d.AverageCityMPG}<br><b>Highway MPG:</b> ${+d.AverageHighwayMPG}<br><b>Engine cylinders: </b>${+d.EngineCylinders}</span>`);
     });
 
       svg.append("g").attr("transform", "translate(50,50)").call(yaxis);
@@ -227,8 +227,8 @@ const makeAnnotations = d3.annotation()
         .append("div")
         .attr("class", "tooltip")
         .style("position", "absolute")
-        .style("visibility", "hidden");
-      
+        .style("visibility", "hidden")
+
       svg
   .append("g")
   .call(makeAnnotations)
